@@ -1,0 +1,48 @@
+AWS Network Topology for Application Deployment
+VPC: Primary-VPC (vpc-04bdc6eb62c401af2) - Region: ap-southeast-2
+CIDR: 10.0.0.0/16
+├── Subnets
+│   ├── Subnet A (subnet-0c05b62a5a8a544d4)
+│   │   └── Availability Zone: ap-southeast-2a
+│   └── Subnet B (subnet-083d69f85b6079dc8)
+│       └── Availability Zone: ap-southeast-2b
+├── Security Group: sg-07a6e97d82929c894
+│   ├── Open Ports: 22, 80, 9090, 3000
+│   └── Associated Resources:
+│       ├── Load Balancer: MyLoadBalancer
+│       │   ├── DNS: MyLoadBalancer-35602458.ap-southeast-2.elb.amazonaws.com
+│       │   ├── Listener: HTTP (Port 80)
+│       │   └── Target Group: MyTargetGroup
+│       └── Compute Instances:
+│           ├── Prometheus Server (i-027e0a17395e28694)
+│           │   ├── Role: Metrics Collection
+│           │   ├── Public IP: 54.252.88.122
+│           │   └── Port: 9090
+│           ├── Grafana Server (i-0654e49f2e85638a7)
+│           │   ├── Role: Visualization
+│           │   ├── Public IP: 13.54.185.73
+│           │   └── Port: 3000
+│           └── API Server (i-0fc94f171b5cb556e)
+│               ├── Role: Backend API
+│               ├── Public IP: 3.25.203.108
+│               ├── Ports: 3001 (API), 80 (Web)
+│               └── Associated Security Group: sg-053a8faddc49659ae
+├── Database Layer
+│   ├── Primary RDS
+│   │   ├── Endpoint: mysql-sydney-primary.cn0gigquicc1.ap-southeast-2.rds.amazonaws.com
+│   │   ├── Port: 3306
+│   │   └── Credentials: dbadmin/Admin12345678!
+│   ├── Replica RDS
+│   │   ├── Region: Oregon
+│   │   ├── Endpoint: mysql-oregon-replica.cvmmme46qtv1.us-west-2.rds.amazonaws.com
+│   │   └── Connection: VPC Peering (pcx-02b91c2606f3c01cb)
+│   └── DNS Zone: internal.lab
+│       ├── sydney-db.internal.lab
+│       ├── oregon-db.internal.lab
+│       └── db.internal.lab (Failover)
+└── Backend Application
+    ├── public/
+    │   ├── index.html (form)
+    │   └── thank-you.html
+    ├── server.js (API Logic)
+    └── package.json (Dependencies)
